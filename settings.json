@@ -1,0 +1,6 @@
+{
+     "extension": ".json",
+     "data_file_name": "consoledata.json",
+     "log_file_name": "log.json",
+     "log": true
+}
