@@ -241,7 +241,7 @@ class DATA:
 			p = self.content["users"]["content"][user]
 			del self.content["users"]["content"][user]
 			self.content["users"]["content"][new_name] = p
-			newlist = self.users_list(caller, pr=pr)
+			newlist = self.users_list(caller, pr=pr, inp=input)
 			for u in newlist:
 				if str(u["user_id"]) == user:
 					u["user_id"] = new_name
@@ -351,6 +351,27 @@ class DATA:
 			self.load()
 
 class BRIDGE:
+	def load_clients(self):
+		clients = [["twitch_clips", "twitch_clips_client.py"]]
+		self.clients = []
+		for c in clients:
+			try:
+				function = __import__("Clients."+c[1].replace(".py", ""), fromlist=['start'])
+				self.clients.append([c[0], function.start])
+			except Exception as e:
+				print("Error importing client: {}".format(c[0]), e)
+
+	def connect_to_client(self, user_id, client_name, pr=print, inp=input):
+		for c in self.clients:
+			if client_name == c[0]:
+				try:
+					c[1](pr, inp)
+				except:
+					print("Error running client: {}".format(c[0]))
+				else:
+					print("Stopped client: {}".format(c[0]))
+
+
 	def __init__(self, data, settings, camera):
 		self.data = data
 		self.settings = settings
@@ -370,7 +391,8 @@ class BRIDGE:
 				[self.data.set_permission_level_user, "set_permission_level_user"],
 				[self.data.rec.help, "rec_help"],
 				[self.close_server, "close_server"],
-				[self.data.rename_user, "rename"]
+				[self.data.rename_user, "rename"],
+				[self.connect_to_client, "cc"]
 				]
 				self.user_commands = False
 			except:
@@ -379,11 +401,9 @@ class BRIDGE:
 			self.commands = [
 			[self.data.display_errors, "error"]]
 			self.user_commands = False
+		self.load_clients()
 
-	def connnect_to_server(self, user_id, server_name, pr=print, inp=input):
-		for s in self.servers:
-			if server_name == s[0]:
-				s[1](pr, inp)
+
 
 	def restart_server(self, user_id, pr=print, inp=input):
 		pass
@@ -420,7 +440,7 @@ class BRIDGE:
 			return False
 
 	def who(self, user_id, pr=print, inp=input):
-		pr(self.get_user_id_camera(pr=pr))
+		pr(self.get_user_id_camera(pr=pr, inp=input))
 
 	def setup_user_commands(self, user):
 		if not self.user_commands:
@@ -450,23 +470,23 @@ class BRIDGE:
 		try:
 			if self.data.permission(self.data.user_id, user_id, str_command, pr=pr):
 				if len(args) == 0:
-					return c(user_id, pr=pr, inp=input)
+					return c(user_id, pr=pr, inp=inp)
 				if len(args) == 1:
-					return c(user_id,  args[0], pr=pr, inp=input)
+					return c(user_id,  args[0], pr=pr, inp=inp)
 				if len(args) == 2:
-					return c(user_id, args[0], args[1], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], pr=pr, inp=inp)
 				if len(args) == 3:
-					return c(user_id, args[0], args[1], args[2], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], pr=pr, inp=inp)
 				if len(args) == 4:
-					return c(user_id, args[0], args[1], args[2], args[3], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], args[3], pr=pr, inp=inp)
 				if len(args) == 5:
-					return c(user_id, args[0], args[1], args[2], args[3], args[4], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], args[3], args[4], pr=pr, inp=inp)
 				if len(args) == 6:
-					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], pr=pr, inp=inp)
 				if len(args) == 7:
-					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], args[6], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], args[6], pr=pr, inp=inp)
 				if len(args) == 8:
-					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], pr=pr, inp=input)
+					return c(user_id, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], pr=pr, inp=inp)
 			else:
 				return False
 		except Exception as e:
@@ -695,7 +715,7 @@ class USER:
 		self.pr = pr
 		self.camera = camera
 
-	def logout(self, user_id, pr=print):
+	def logout(self, user_id, pr=print, inp=input):
 		self.logged = False
 
 	def run(self, inp=input, pr=print):
@@ -754,7 +774,7 @@ class USER:
 		return False
 
 
-server = SERVER("192.168.1.104", 7777)
+server = SERVER("192.168.1.92", 7777)
 
 server.setup()
 
