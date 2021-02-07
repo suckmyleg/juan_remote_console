@@ -6,10 +6,6 @@ from console.SERVER import SERVER
 from console.SETTINGS import SETTINGS
 from console.USER import USER
 
-server = SERVER("192.168.1.92", 7777)
-
-server.setup()
-
 settings = SETTINGS()
 
 log = LOG(settings)
@@ -17,6 +13,10 @@ log = LOG(settings)
 rec = rec.rec(log=False)
 
 data = DATA(settings, log, rec)
+
+server = SERVER("192.168.1.92", 7777)
+
+server.setup()
 
 bridge = BRIDGE(data, settings, False)
 
