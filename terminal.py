@@ -352,7 +352,7 @@ class DATA:
 
 class BRIDGE:
 	def load_clients(self):
-		clients = [["twitch_clips", "twitch_clips_client.py"]]
+		clients = [["twitch_clips", "twitch_clips_client.py"], ["discord", "c.py"]]
 		self.clients = []
 		for c in clients:
 			try:
@@ -368,8 +368,12 @@ class BRIDGE:
 					c[1](pr, inp)
 				except:
 					print("Error running client: {}".format(c[0]))
+					return False
 				else:
 					print("Stopped client: {}".format(c[0]))
+					return True
+
+		print("Not found client")
 
 
 	def __init__(self, data, settings, camera):
