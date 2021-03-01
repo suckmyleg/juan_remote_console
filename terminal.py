@@ -1,24 +1,24 @@
 import rec
-from console.BRIDGE import BRIDGE
 from console.DATA import DATA
 from console.LOG import LOG
 from console.SERVER import SERVER
+from console.BRIDGE import BRIDGE
 from console.SETTINGS import SETTINGS
 from console.USER import USER
 
-settings = SETTINGS()
+settings = SETTINGS(log=False)
 
 log = LOG(settings)
 
 rec = rec.rec(log=False)
 
-data = DATA(settings, log, rec)
-
-server = SERVER("192.168.1.92", 7777)
-
-server.setup()
+data = DATA(settings, log, rec, log=False)
 
 bridge = BRIDGE(data, settings, False)
+
+server = SERVER("192.168.1.92", 7777, bridge)
+
+server.setup()
 
 user = USER(bridge)
 

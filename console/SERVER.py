@@ -6,7 +6,7 @@ class SERVER:
 	def accept_connections(self):
 		while self.accept_new_connections:
 			conn, addr = self.s.accept()
-			p = CONNECTION(conn, addr)
+			p = CONNECTION(conn, addr, self.bridge)
 			self.connections.append(p)
 
 	def setup(self, pr=print, inp=input):
@@ -24,9 +24,10 @@ class SERVER:
 		except Exception as e:
 			pr("Error trying to setup the server.\nHost: {}\nPort: {}\nError: {}".format(self.host, self.port, e))
 
-	def __init__(self, host, port):
+	def __init__(self, host, port, bridge):
 		self.host = host
 		self.port = port
+		self.bridge = bridge
 		self.accept_new_connections = True
 		self.connections = []
 		self.accept_new_connections_thread = False

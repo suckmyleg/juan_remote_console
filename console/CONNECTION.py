@@ -3,7 +3,7 @@ import pickle
 from cryptography.fernet import Fernet
 import time
 import threading
-from console.BRIDGE import BRIDGE
+from console.USER import USER
 
 class CONNECTION:
 	def hear(self):
@@ -27,16 +27,13 @@ class CONNECTION:
 
 	
 	def logic(self):
-		global data, settings, log
-		bridge = BRIDGE(data, settings, self.camera)
-		user = USER(bridge, pr=self.pr, camera=self.camera)
+		user = USER(self.bridge, pr=self.pr, camera=self.camera)
 		user.log_in(user_id="Quest", password=False, inp=self.input_user, pr=self.pr)
 		while self.listen:
 			if user.logged:
 				user.run_print(self.input_user, pr=self.pr)
 			else:
-				bridge = BRIDGE(data, settings, self.camera)
-				user = USER(bridge, pr=self.pr)
+				user = USER(self.bridge, pr=self.pr, camera=self.camera)
 				user.log_in(inp=self.input_user, pr=self.pr)
 
 	def get_good_delay(self):
@@ -152,10 +149,11 @@ class CONNECTION:
 			self.hear_thread = threading.Thread(target=self.logic)
 			self.hear_thread.start()
 
-	def __init__(self, conn, addr):
+	def __init__(self, conn, addr, bridge):
 		self.host = addr[0]
 		self.port = addr[1]
 		self.conn = conn
+		self.bridge = bridge
 		self.listen = True
 		self.test_camera_ = True
 		self.camera = False

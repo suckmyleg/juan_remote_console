@@ -80,16 +80,16 @@ class BRIDGE:
 				if not only_runable or True:
 					pr(" ", c[1])
 
-	def get_user_id_camera(self, pr=print, inp=input):
+	def get_user_id_camera(self, camera, pr=print, inp=input):
 		try:
-			data = self.data.rec.who(min=3, camera=self.camera)
+			data = self.data.rec.who(min=3, camera=camera)
 			user_id = data[0][1]
 			return user_id
 		except Exception as e:
 			return False
 
-	def who(self, user_id, pr=print, inp=input):
-		pr(self.get_user_id_camera(pr=pr, inp=input))
+	def who(self, user_id, camera, pr=print, inp=input):
+		pr(self.get_user_id_camera(camera, pr=pr, inp=input))
 
 	def setup_user_commands(self, user):
 		if not self.user_commands:

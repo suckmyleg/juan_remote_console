@@ -41,12 +41,14 @@ class USER:
 				pr("")
 				pr("LOGIN")
 				extra = " "
+
 			if not user_id:
 				if auto_user_id_photo:
-					user_id = self.bridge.get_user_id_camera()
+					user_id = self.bridge.get_user_id_camera(self.camera)
 				if not auto_user_id_photo or not user_id:
 					user_id = inp(" user_id:")
 				user_id = str(user_id)
+
 			if password == "__NO__PASSWORD__":
 				password = inp(" password:")
 

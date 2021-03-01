@@ -58,7 +58,7 @@ class SETTINGS:
 			self.extension = sett["extension"]
 			self.data_file_name = self.dirr(sett["data_file_name"])
 			self.log_file_name = self.dirr(sett["log_file_name"])
-			self.log = sett["log"]
+			#self.log = sett["log"]
 
 			return changed
 	def dirr(self, name):
@@ -70,15 +70,14 @@ class SETTINGS:
 		if self.log:
 			print("{}:{}".format(p, m))
 
-	def __init__(self):
+	def __init__(self, log=False):
 		self.directory = "data/"
 		self.settings_file_name = "settings.json"
 		self.extension = ".json"
-		self.log = False
 		self.data_file_name = "data."
 		self.log_file_name = "log."
+		self.log = log
 		self.change_extension()
-		self.log = True
 		if self.load_settings():
 			self.change_extension()
 			self.change_file_name()

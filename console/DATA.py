@@ -195,10 +195,11 @@ class DATA:
 		for r in info:
 			pr("{}> {}".format("Info", r))
 
-	def __init__(self, settings, log, rec):
+	def __init__(self, settings, logg, rec, log=False):
 		self.user_id = "0" 
 		self.settings = settings
-		self.log = log
+		self.log = logg
+		self.display_log = log
 		self.rec = rec
 		self.raw = ""
 		self.key = "VlD8h2tEiJkQpKKnDNKnu8ya2fpIBMOo5oc7JKNasvk="
