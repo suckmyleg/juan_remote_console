@@ -1,9 +1,8 @@
 
 class BRIDGE:
 	def load_clients(self):
-		clients = [["twitch_clips", "twitch_clips_client.py"]]
 		self.clients = []
-		for c in clients:
+		for c in self.clients_list_:
 			try:
 				function = __import__("Clients."+c[1].replace(".py", ""), fromlist=['start'])
 				self.clients.append([c[0], function.start])
@@ -13,18 +12,33 @@ class BRIDGE:
 	def connect_to_client(self, user_id, client_name, pr=print, inp=input):
 		for c in self.clients:
 			if client_name == c[0]:
+				pr("Starting client", decored=True)
+				pr("================================================================================")
 				try:
 					c[1](pr, inp)
 				except:
-					print("Error running client: {}".format(c[0]))
+					pr("================================================================================")
+					pr("Error running client: {}".format(c[0]))
 				else:
-					print("Stopped client: {}".format(c[0]))
+					pr("================================================================================")
+					pr("Stopped client: {}".format(c[0]), decored=True)
+				return None
+
+		pr("Uknown client: {}".format(client_name))
 
 
-	def __init__(self, data, settings, camera):
+	def clients_list(self, user_id, pr=print, inp=input):
+		pr("Clients: ")
+		for c in self.clients_list_:
+			pr("  " + c[0] + " ==== " + c[1])
+
+	def __init__(self, data, settings, camera, clients):
 		self.data = data
 		self.settings = settings
 		self.camera = camera
+		self.clients_list_ = clients
+		self.clients = []
+
 		if self.data.fernet:
 			try:
 				self.commands = [
@@ -41,7 +55,8 @@ class BRIDGE:
 				[self.data.rec.help, "rec_help"],
 				[self.close_server, "close_server"],
 				[self.data.rename_user, "rename"],
-				[self.connect_to_client, "cc"]
+				[self.connect_to_client, "cc"],
+				[self.clients_list, "clients_list"]
 				]
 				self.user_commands = False
 			except:

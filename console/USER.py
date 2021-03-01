@@ -5,6 +5,7 @@ class USER:
 		self.logged = False
 		self.bridge = bridge
 		self.pr = pr
+		self.inp = inp
 		self.camera = camera
 
 	def logout(self, user_id, pr=print, inp=input):
@@ -32,6 +33,13 @@ class USER:
 		m = self.run(inp, pr=self.pr)
 		if not m == None:
 			pr(m)
+
+	def main(self):
+		while True:
+			if self.logged:
+				self.run_print(inp=self.inp, pr=self.pr)
+			else:
+				self.log_in(inp=self.inp, pr=self.pr)
 
 	def log_in(self, user_id=False, password="__NO__PASSWORD__", auto_user_id_photo=True, inp=input, pr=print):
 		tries = 3

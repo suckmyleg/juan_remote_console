@@ -27,14 +27,9 @@ class CONNECTION:
 
 	
 	def logic(self):
-		user = USER(self.bridge, pr=self.pr, camera=self.camera)
+		user = USER(self.bridge, pr=self.pr, inp=self.input_user, camera=self.camera)
 		user.log_in(user_id="Quest", password=False, inp=self.input_user, pr=self.pr)
-		while self.listen:
-			if user.logged:
-				user.run_print(self.input_user, pr=self.pr)
-			else:
-				user = USER(self.bridge, pr=self.pr, camera=self.camera)
-				user.log_in(inp=self.input_user, pr=self.pr)
+		user.main()
 
 	def get_good_delay(self):
 		i = 0
@@ -85,7 +80,10 @@ class CONNECTION:
 				self.listen = False
 			time.sleep(self.delay)
 
-	def pr(self, m, p="", n=""):
+	def pr(self, m, p="", n="", decored=False):
+		if decored:
+			d = "="*len(m)
+			m = d+"\n"+m+"\n"+d
 		self.send_data(str(m)+str(p)+str(n))
 
 	def recv(self, pickle_m=False):

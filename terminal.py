@@ -14,7 +14,9 @@ rec = rec.rec(log=False)
 
 data = DATA(settings, log, rec, log=False)
 
-bridge = BRIDGE(data, settings, False)
+clients = clients = [["twitch_clips", "twitch_clips_client.py"], ["discord", "c.py"]]
+
+bridge = BRIDGE(data, settings, False, clients)
 
 server = SERVER("192.168.1.92", 7777, bridge)
 
@@ -29,11 +31,7 @@ else:
 
 try:
 	while True:
-		while user.logged:
-			user.run_print()
-		bridge = BRIDGE(data, settings, False)
-		user = USER(bridge)
-		user.log_in()
+		user.main()
 
 except Exception as e:
 	print(e)
